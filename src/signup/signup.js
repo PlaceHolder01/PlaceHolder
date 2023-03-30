@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 import "./signup.css";
-// import axios from "axios";
-import { useEffect } from "react";
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
-import { auth } from '../firebase';
+import {doc,setDoc} from "firebase/firestore";
+import { auth,db } from '../firebase';
  
-const DonationForm = () => {
-//   const [verified, setVerified] = useState(false);
-
-//   const handleChange = (e) => {
-//     SetData({ ...data, type: e.target.value });
-//   };
+const SignUp = () => {
 
   const [data, SetData] = useState({
     name:"",
-    email: "",
+    email:"",
     mobile: "",
     password: "",
-    location: ""
+    repassword:""
   });
+
+  const [err,seterr]=useState("");
 
   let name, value;
   const handleInputs = (e) => {
@@ -28,122 +24,145 @@ const DonationForm = () => {
   };
 
   const handleSubmit = async () => {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        console.log("Latitude is :", position.coords.latitude);
-        console.log("Longitude is :", position.coords.longitude);
+    let location;
+    navigator.geolocation.getCurrentPosition((position)=>{
+      location={
+        lat:position.coords.latitude,
+        long:position.coords.longitude
+      }
       });
 
-    //   e.preventDefault()
+      if(data.name.length===0)
+      {
+        seterr("Name is missing");
+        return;
+      }
+
+      if(data.email.length===0 || data.email.search("@")===-1)
+      {
+        seterr("Enter a valid Email");
+        return;
+      }
+      if(data.mobile.length < 10)
+      {
+        seterr("Enter a valid phone number");
+        return;
+      }
+
+      if(data.password.length<6)
+      {
+        seterr("Password length should be greater than 6");
+        return;
+      }
+      if(data.password!==data.repassword)
+      {
+        seterr("Passwords are not matching");
+        return;
+      }
      
       await createUserWithEmailAndPassword(auth, data.email, data.password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user);
+            // const usercollection=collection(db, "users");
+            setDoc(doc(db,"users",user.uid), {     
+              name: data.name,
+              email: data.email,
+              location: location,
+              mobile:data.mobile
+              }).then(() => { 
+              // Data saved successfully!
+              console.log('data submitted');  
+              navigator('/login');
+        
+            }).catch((error) => {
+              seterr("Email already Registered");
+            });
         })
         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-            // ..
+            console.log(error);
         });
  
   };
 
-  useEffect(() => {
-    //   axios
-    //     .get(`https://oauth2.googleapis.com/tokeninfo?id_token=${id_token}`)
-    //     .then(() => {
-    //       setVerified(true);
-    //       console.log("verified");
-    //     })
-    //     .catch(() => {
-    //       alert("Id token is invalid please login again");
-    //     });
-
-  }, []);
-
     return (
-      <div>
-        <div className="page-wrapper bg-dark p-t-100 p-b-50">
-          <div
-            className="wrapper wrapper--w900"
-            style={{ marginBottom: "200px" }}
-          >
-            <div className="card card-6">
-              <div className="card-heading">
-                <h2 className="title">Sign Up</h2>
-              </div>
+      <section id="signup">
+        <div style={{height:'10vh'}}></div>
+        <div className="signup-card">
+              <div className="card-heading">Sign Up</div>
               <div className="card-body">
+                <div className="signup-error">{err}</div>
                 <form>
                   <div className="form-row">
-                    <div className="name">Full name</div>
-                    <div className="value">
+                    <div className="signup-row-title">Full name</div>
+                    <div className="signup-value">
                       <input
-                        className="input--style-6"
+                        className="signup-input"
                         type="text"
-                        name="Harry Styles"
+                        name="name"
                         onChange={handleInputs}
                       />
                     </div>
                   </div>
                   <div className="form-row">
-                    <div className="name">Mobile No.</div>
-                    <div className="value">
-                      <div className="input-group">
+                    <div className="signup-row-title">Mobile No.</div>
+                    <div className="signup-value">
                         <input
-                          className="input--style-6"
+                          className="signup-input"
                           type="1"
                           name="mobile"
                           placeholder="9999999999"
                           onChange={handleInputs}
                         />
-                      </div>
                     </div>
                   </div>
                   <div className="form-row">
-                    <div className="name">Email</div>
-                    <div className="value">
-                      <div className="input-group">
+                    <div className="signup-row-title">Email</div>
+                    <div className="signup-value">
                         <input
-                          className="input--style-6"
+                          className="signup-input"
                           type="text"
                           name="email"
                           placeholder="name@example.com"
                           onChange={handleInputs}
                         />
-                      </div>
                     </div>
                   </div>
                   <div className="form-row">
-                    <div className="name">Password</div>
-                    <div className="value">
-                      <div className="input-group">
+                    <div className="signup-row-title">Password</div>
+                    <div className="signup-value">
                         <input
-                          className="input--style-6"
-                          type="text"
+                          className="signup-input"
+                          type="password"
                           name="password"
-                          placeholder=""
                           onChange={handleInputs}
                         />
-                      </div>
                     </div>
                   </div>
-                  </form>
+                  <div className="form-row">
+                    <div className="signup-row-title">Retype-Password</div>
+                    <div className="signup-value">
+                        <input
+                          className="signup-input"
+                          type="password"
+                          name="repassword"
+                          onChange={handleInputs}
+                        />
+                    </div>
+                  </div>
+                </form>
               <div className="card-footer">
                 <button
-                  className="btn btn--radius-2 btn--blue-2 bb"
+                  className="signup-button"
                   type="submit"
                   onClick={handleSubmit}
                 >
-                  Start Fundraiser
+                  Sign Up
                 </button>
               </div>
-            </div>
-            </div>
         </div>
-      </div>
-      </div>
+        </div>
+      </section>
     );
 };
 
-export default DonationForm;
+export default SignUp;
