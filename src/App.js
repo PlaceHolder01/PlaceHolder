@@ -2,6 +2,7 @@ import SignUp from './signup/signup';
 import Login from './login/login';
 import FoodBank from './user/foodbank';
 import Restaurant from './user/restaurant';
+import Feed from './feed/feed';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {

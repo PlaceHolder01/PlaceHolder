@@ -11,7 +11,8 @@ const SignUp = () => {
     email:"",
     mobile: "",
     password: "",
-    repassword:""
+    repassword:"",
+    type:""
   });
 
   const [err,seterr]=useState("");
@@ -32,6 +33,7 @@ const SignUp = () => {
       }
       });
 
+      console.log(data);
       if(data.name.length===0)
       {
         seterr("Name is missing");
@@ -68,7 +70,8 @@ const SignUp = () => {
               name: data.name,
               email: data.email,
               location: location,
-              mobile:data.mobile
+              mobile:data.mobile,
+              type:data.type
               }).then(() => { 
               // Data saved successfully!
               console.log('data submitted');  
@@ -114,6 +117,13 @@ const SignUp = () => {
                           onChange={handleInputs}
                         />
                     </div>
+                  </div>
+                  <div className="form-row">
+                    <div className="signup-row-title">Type</div>
+                    <select className="signup-value" onChange={handleInputs} name="type">
+                      <option value="Resturant">Resturant</option>
+                      <option value="Food bank">Food Bank</option>
+                    </select>
                   </div>
                   <div className="form-row">
                     <div className="signup-row-title">Email</div>

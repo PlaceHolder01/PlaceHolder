@@ -1,0 +1,18 @@
+.FeedCard{
+    display:flex;
+    width:200px;
+    height: 100px;
+    padding:20px;
+    border-radius: 5px;
+    /* box-shadow: ; */
+}
+
+.feedcard-data{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.feedcard-button{
+    align-self: end;
+}
