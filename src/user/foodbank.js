@@ -1,6 +1,8 @@
 import React from 'react';
 import Navigation from '../navigation/navigation';
+import Support from '../support';
 import './foodbank.css';
+
 
 const FoodBank = () => {
 
@@ -32,6 +34,7 @@ const FoodBank = () => {
           </div>
         ))}
       </div>
+      <Support />
     </section>
   );
 };
