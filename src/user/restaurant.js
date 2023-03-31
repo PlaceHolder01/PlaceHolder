@@ -1,4 +1,5 @@
 import React from 'react';
+import Support from '../support';
 import './foodbank.css';
 
 const Restaurant = () => {
@@ -51,6 +52,7 @@ const Restaurant = () => {
           </div>
         ))}
       </div>
+      <Support />
     </section>
   );
 };

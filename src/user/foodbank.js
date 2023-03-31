@@ -1,5 +1,7 @@
 import React from 'react';
+import Support from '../support';
 import './foodbank.css';
+
 
 const FoodBank = () => {
   const receivedItems = [
@@ -51,6 +53,7 @@ const FoodBank = () => {
           </div>
         ))}
       </div>
+      <Support />
     </section>
   );
 };
