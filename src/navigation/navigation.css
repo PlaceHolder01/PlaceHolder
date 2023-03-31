@@ -10,6 +10,10 @@
   padding-top: 25px;
 }
 
+.avatar{
+  cursor: pointer;
+}
+
 .logout-button{
   width: 5vw;
   min-width: 10px;

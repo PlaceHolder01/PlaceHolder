@@ -8,7 +8,7 @@ const Donation = () => {
 
   const [data, SetData] = useState({
     name:"",
-    type:"",
+    type:"Veg",
     quantity:""
   });
 
@@ -17,10 +17,11 @@ const Donation = () => {
 
   let name, value;
   const handleInputs = (e) => {
-    console.log(e);
+    // console.log(e);
     name = e.target.name;
     value = e.target.value;
     SetData({ ...data, [name]: value });
+    console.log(data.type);
   };
 
   const handleSubmit = async () => {
@@ -42,6 +43,7 @@ const Donation = () => {
         status:'active'
         }).then(() => { 
         console.log('data submitted');  
+        window.location="/";
   
       }).catch((error) => {
         console.log(error);

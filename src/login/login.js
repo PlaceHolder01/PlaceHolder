@@ -32,6 +32,10 @@ const Login = () => {
               if (!snap.exists()) throw new Error("not-found"); // document missing
               localStorage.setItem('name',snap.data().name);
               localStorage.setItem('uid',user.user.uid);
+              if(snap.data().type==="Resturant")
+                window.location="/Resturant";
+              else
+                window.location='/foodbank';
             });
         });
         
@@ -83,6 +87,7 @@ const Login = () => {
                   Login
                 </button>
               </div>
+                <div className="signuptext" style={{textAlign:'center'}}>Dont have a account? <a href="/signup">Sign up</a></div>
         </div>
         </div>
       </section>

@@ -26,7 +26,6 @@ const SignUp = () => {
     name = e.target.name;
     value = e.target.value;
     SetData({ ...data, [name]: value });
-    console.log(data.type);
   };
 
   const handleSubmit = async () => {
@@ -101,7 +100,7 @@ const SignUp = () => {
 
     return (
       <section id="signup">
-        <div style={{height:'10vh'}}></div>
+        {/* <div style={{height:'200px'}}></div> */}
         <div className="signup-card">
               <div className="card-heading">Sign Up</div>
               <div className="card-body">
@@ -193,6 +192,7 @@ const SignUp = () => {
                   Sign Up
                 </button>
               </div>
+              <div className="signuptext" style={{textAlign:'center'}}>Have an account? <a href="/login">Login</a></div>
         </div>
         </div>
       </section>
