@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "../signup/signup.css";
 import {  signInWithEmailAndPassword  } from 'firebase/auth';
-import { auth} from '../firebase';
+import {db,auth} from '../firebase';
+import { getDoc,doc } from "firebase/firestore";
  
 const Login = () => {
 
@@ -22,13 +23,21 @@ const Login = () => {
   const handleSubmit = async () => {
      
       try {
-        await signInWithEmailAndPassword(auth, data.email, data.password).then(()=>{
+        await signInWithEmailAndPassword(auth, data.email, data.password).then(async (user)=>{
           console.log("LoginSuccessful");
-        });
+          console.log(user.user.uid);
 
+          getDoc(doc(db, "users", user.user.uid))
+            .then((snap) => {
+              if (!snap.exists()) throw new Error("not-found"); // document missing
+              localStorage.setItem('name',snap.data().name);
+              localStorage.setItem('uid',user.user.uid);
+            });
+        });
+        
       } catch (err) {
         seterr("Either email or password not found!!");
-        console.log("error");
+        console.log(err);
       }
  
   };

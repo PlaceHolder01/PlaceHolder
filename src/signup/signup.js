@@ -3,6 +3,7 @@ import "./signup.css";
 import {  createUserWithEmailAndPassword  } from 'firebase/auth';
 import {doc,setDoc} from "firebase/firestore";
 import { auth,db } from '../firebase';
+// import { type } from "@testing-library/user-event/dist/type";
  
 const SignUp = () => {
 
@@ -12,16 +13,20 @@ const SignUp = () => {
     mobile: "",
     password: "",
     repassword:"",
-    type:""
+    type:"Resturant",
+    typename:""
   });
 
   const [err,seterr]=useState("");
 
   let name, value;
   const handleInputs = (e) => {
+    console.log(e);
+
     name = e.target.name;
     value = e.target.value;
     SetData({ ...data, [name]: value });
+    console.log(data.type);
   };
 
   const handleSubmit = async () => {
@@ -71,14 +76,21 @@ const SignUp = () => {
               email: data.email,
               location: location,
               mobile:data.mobile,
-              type:data.type
+              type:data.type,
+              typename:data.typename
               }).then(() => { 
               // Data saved successfully!
               console.log('data submitted');  
-              navigator('/login');
+              localStorage.setItem('name',data.name);
+              localStorage.setItem('uid',user.uid);
+              // if(type==="Resturant")
+              //   window.location="/resturant";
+              // else
+              //   window.location='/foodbank';
         
             }).catch((error) => {
               seterr("Email already Registered");
+              console.log(error);
             });
         })
         .catch((error) => {
@@ -111,7 +123,7 @@ const SignUp = () => {
                     <div className="signup-value">
                         <input
                           className="signup-input"
-                          type="1"
+                          type="number"
                           name="mobile"
                           placeholder="9999999999"
                           onChange={handleInputs}
@@ -119,8 +131,20 @@ const SignUp = () => {
                     </div>
                   </div>
                   <div className="form-row">
+                    <div className="signup-row-title">Resturant/Food Bank Name</div>
+                    <div className="signup-value">
+                        <input
+                          className="signup-input"
+                          type="text"
+                          name="typename"
+                          placeholder="Indian Resturant"
+                          onChange={handleInputs}
+                        />
+                    </div>
+                  </div>
+                  <div className="form-row">
                     <div className="signup-row-title">Type</div>
-                    <select className="signup-value" onChange={handleInputs} name="type">
+                    <select className="signup-value" onChange={handleInputs} name="type" value={data.type}>
                       <option value="Resturant">Resturant</option>
                       <option value="Food bank">Food Bank</option>
                     </select>
