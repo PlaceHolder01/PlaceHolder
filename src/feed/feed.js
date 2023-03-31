@@ -2,7 +2,8 @@ import React,{useEffect,useState} from 'react'
 import { collection ,getDocs} from 'firebase/firestore';
 import {db} from "../firebase";
 import Navigation from '../navigation/navigation';
-// import 
+import FeedCard from './feedCard';
+import './feed.css';
 
 const Feed=()=>{
     const [food, setfood] = useState([]);
@@ -22,12 +23,14 @@ const Feed=()=>{
             <div className='feed-heading'>Available Food</div>
             <div className='feed-grid'>
             {food.map((item, index) => (
-                <div key={index} className="list-item">
-                <div className="item-name">{item.name}</div>
-                <div className="item-type">{item.type}</div>
-                <div className="item-quantity">{item.quantity}</div>
-
-                </div>
+              <FeedCard
+                key={index}
+                resturantname={item.resturantname}
+                name={item.name}
+                type={item.type}
+                quantity={item.quantity}
+                status={item.status}
+              />
             ))}
             </div>
         </section>

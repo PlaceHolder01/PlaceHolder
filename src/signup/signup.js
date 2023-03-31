@@ -82,10 +82,10 @@ const SignUp = () => {
               console.log('data submitted');  
               localStorage.setItem('name',data.name);
               localStorage.setItem('uid',user.uid);
-              // if(type==="Resturant")
-              //   window.location="/resturant";
-              // else
-              //   window.location='/foodbank';
+              if(data.type==="Resturant")
+                window.location="/resturant";
+              else
+                window.location='/foodbank';
         
             }).catch((error) => {
               seterr("Email already Registered");
